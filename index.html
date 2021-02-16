@@ -26,6 +26,8 @@
 <script type="text/javascript">
 
 function setDeviceTime() {
+  document.getElementById("result").innerHTML = "<h2>Result:</h2>Working...";
+
   navigator.bluetooth.requestDevice({
     filters: [
       { namePrefix: 'Puck.js' },
