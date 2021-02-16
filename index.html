@@ -1,5 +1,28 @@
 <html>
 <head>
+
+<style>
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73AD21;
+  padding: 10px;
+}
+</style>
+
 <script type="text/javascript">
 
 function setDeviceTime() {
@@ -30,16 +53,13 @@ function setDeviceTime() {
       var data = new Int32Array(1);
       data[0] = unixtimestamp;
       return characteristic.writeValue(data);
-      
     })
     .then(function() {
-    	alert("Time set");
-       document.getElementById("result").innerHTML = "Setting time completed!";    	
+       document.getElementById("result").innerHTML = "<h2>Result:</h2><br>Time set successfully!";    	
     })
     .catch(function(error) {
        // And of course: error handling!
-       alert("Connection failed");
-       document.getElementById("result").innerHTML = "Setting time failed!";
+       document.getElementById("result").innerHTML = "<h2>Result:</h2><br>Setting time failed!";
        console.error('Connection failed!', error);
     });
 };
@@ -48,7 +68,7 @@ function setDeviceTime() {
 
 </head>
 <body>
-  <button type="button" onclick="setDeviceTime()">Set Device Time</button>
-  <div id="result"></div>
+<button class="button" type="button" onclick="setDeviceTime()">Set Device Time</button>
+<div id="result"><h2>Result:</h2><br></div>
 </body>
 </html>
