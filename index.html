@@ -30,7 +30,7 @@ function setDeviceTime() {
 
   navigator.bluetooth.requestDevice({
     filters: [
-      { namePrefix: 'Puck.js' },
+      { namePrefix: 'Logger' },
       { services: [0xBCDE] }
     ]
   })
