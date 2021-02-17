@@ -1,76 +1,89 @@
 <html>
-<head>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<style>
-.button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  font-size: 24px;
-}
+  <style>
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 24px;
+  }
 
-.center {
-  margin: auto;
-  width: 60%;
-  border: 3px solid #73AD21;
-  padding: 10px;
-}
-</style>
+  .center {
+    margin: auto;
+  }
 
-<script type="text/javascript">
+  h2 {
+    font-family: 'Courier New';
+  }
 
-function setDeviceTime() {
-  document.getElementById("result").innerHTML = "<h2>Result:</h2>Working...";
+  p {
+    font-family: 'Courier New';
+    font-size: 20px;
+  }
 
-  navigator.bluetooth.requestDevice({
-    filters: [
-      { namePrefix: 'Logger' },
-      { services: [0xBCDE] }
-    ]
-  })
-    .then(function(device) {
-      // Step 2: Connect to it
-      return device.gatt.connect();
+  button {
+    margin:auto;
+    display:block;
+  }
+  </style>
+
+  <script type="text/javascript">
+  function setDeviceTime() {
+    document.getElementById("result").innerHTML = "<h2>Result:</h2><p>Working...</p>";
+
+    navigator.bluetooth.requestDevice({
+      filters: [
+        { namePrefix: 'Logger' },
+        { services: [0xBCDE] }
+      ]
     })
-    .then(function(server) {
-      // Step 3: Get the Service
-      console.log("Getting service")
-      return server.getPrimaryService(0xBCDE);
-    })
-    .then(function(service) {
-      // Step 4: get the Characteristic
-      console.log("Getting char")
-      return service.getCharacteristic(0xABCD);
-    })
-    .then(function(characteristic) {
-      // Step 5: Write to the characteristic
-      console.log("Writing char")
-      var unixtimestamp = Math.floor(Date.now() / 1000)
-      var data = new Int32Array(1);
-      data[0] = unixtimestamp;
-      return characteristic.writeValue(data);
-    })
-    .then(function() {
-       document.getElementById("result").innerHTML = "<h2>Result:</h2><br>Time set successfully!";    	
-    })
-    .catch(function(error) {
-       // And of course: error handling!
-       document.getElementById("result").innerHTML = "<h2>Result:</h2><br>Setting time failed!";
-       console.error('Connection failed!', error);
-    });
-};
+      .then(function(device) {
+        // Step 2: Connect to it
+        return device.gatt.connect();
+      })
+      .then(function(server) {
+        // Step 3: Get the Service
+        console.log("Getting service")
+        return server.getPrimaryService(0xBCDE);
+      })
+      .then(function(service) {
+        // Step 4: get the Characteristic
+        console.log("Getting char")
+        return service.getCharacteristic(0xABCD);
+      })
+      .then(function(characteristic) {
+        // Step 5: Write to the characteristic
+        console.log("Writing char")
+        var unixtimestamp = Math.floor(Date.now() / 1000)
+        var data = new Int32Array(1);
+        data[0] = unixtimestamp;
+        return characteristic.writeValue(data);
+      })
+      .then(function() {
+        document.getElementById("result").innerHTML = "<h2>Result:</h2><p>Time set successfully!</p>";    	
+      })
+      .catch(function(error) {
+        // And of course: error handling!
+        document.getElementById("result").innerHTML = "<h2>Result:</h2><p>Setting time failed!</p>";
+        console.error('Connection failed!', error);
+      });
+  };
 
-</script>
+  </script>
 
-</head>
-<body>
-<button class="button" type="button" onclick="setDeviceTime()">Set Device Time</button>
-<div id="result"><h2>Result:</h2><br></div>
-</body>
+  </head>
+  <body>
+    <div>
+      <button class="button" type="button" onclick="setDeviceTime()">Set Device Time</button>
+      <div id="result"><h2>Result:</h2><br></div>
+    </div>
+  </body>
 </html>
